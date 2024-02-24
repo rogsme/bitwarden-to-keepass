@@ -1,9 +1,11 @@
-#!/bin/sh
+#!/bin/bash
 
 # Check that the database password is set
 if [ -z "$DATABASE_PASSWORD" ]; then
     echo "DATABASE_PASSWORD is not set"
-    exit 1
+    echo -n "Keepass DB password [input is hidden] "
+    read -r -s DATABASE_PASSWORD
+    echo
 fi
 
 # If BITWARDEN_URL is not empty, set a custom Bitwarden instance
@@ -31,6 +33,7 @@ fi
 DATABASE_PATH="/exports/$DATABASE_NAME"
 export DATABASE_PATH
 
+export DATABASE_PASSWORD
 
 # Convert the Bitwarden data to a KeePass file
 bw sync || { echo "Failed to sync Bitwarden data"; exit 1; }

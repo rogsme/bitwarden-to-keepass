@@ -14,7 +14,7 @@ It uses the official [bitwarden-cli](https://bitwarden.com/help/article/cli/) cl
 
 ### Environment variables available
 
-- `DATABASE_PASSWORD` (required): The password you want your KeePass file to have.
+- `DATABASE_PASSWORD` (optional): The password you want your KeePass file to have. If not set, the script will ask for a password interactively.
 - `DATABASE_NAME` (optional): The name you want your KeePass file to have. If not set, it will default to `bitwarden.kdbx`.
 - `BITWARDEN_URL` (optional): A custom Bitwarden/Vaultwarden instance. If you are using the official https://bitwarden.com, you can leave this blank.
 
@@ -22,24 +22,26 @@ It uses the official [bitwarden-cli](https://bitwarden.com/help/article/cli/) cl
 
 All backups will be written to `/exports`. You need to mount that volume locally in order to retrieve the backup file.
 
-### Docker command
+### Minimal Docker command
 
 In your terminal, run:
 
 ```sh
-$ docker run --rm -it \
-     -e DATABASE_PASSWORD=123 \
-     -e DATABASE_NAME="my-cool-bitwarden-backup.kdbx" \
-     -e BITWARDEN_URL=http://your.bitwarden.instance.com \
-     -v ./exports:/exports \
-     rogsme/bitwarden-to-keepass
+$ docker run --rm -it -v ./exports:/exports rogsme/bitwarden-to-keepass
 ```
 
 **The `--rm --it` is important!** Why?
 - `--rm`: The Docker container will delete itself after it runs. This ensures no config leaking.
 - `-it`: The script will ask for your credentials, so Docker has to run interactively.
 
-First, the script will ask for your username:
+First, the script will ask for your Keepass DB password. The input is hidden, so it won't be visible on your terminal:
+
+``` sh
+$ DATABASE_PASSWORD is not set
+$ Keepass DB password [input is hidden]
+```
+
+Then, your Bitwarden username:
 
 ``` sh
 $ Email address: your@email.com
@@ -60,7 +62,7 @@ $ Two-step login code: 123456
 And it'll start converting your passwords into KeePass! You'll see something similar to this:
 
 ``` sh
-Generating KeePass file /exports/my-cool-bitwarden-backup.kdbx
+Generating KeePass file /exports/bitwarden.kdbx
 2024-02-20 15:12:54 :: INFO :: KeePass database does not exist, creating a new one.
 2024-02-20 15:13:20 :: INFO :: Folders done (1).
 2024-02-20 15:13:36 :: INFO :: Starting to process 999 items.
@@ -73,14 +75,14 @@ In the end, the script will lock your vault and log out of your account:
 ``` sh
 Your vault is locked.
 You have logged out.
-KeePass file /exports/my-cool-bitwarden-backup.kdbx generated successfully
+KeePass file /exports/bitwarden.kdbx generated successfully
 ```
 
 And you can find your file in your mounted directory!
 
 ``` sh
 $ ls exports
-my-cool-bitwarden-backup.kdbx
+bitwarden.kdbx
 ```
 
 ## FAQ
