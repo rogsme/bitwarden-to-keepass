@@ -1,6 +1,10 @@
 # bitwarden-to-keepass
 Export (most of) your Bitwarden items into a KeePass database.
 
+<p align="center">
+  <img src="https://gitlab.com/uploads/-/system/project/avatar/55488238/logo.png" alt="bitwarden-to-keepass"/>
+</p>
+
 ## Fork information
 
 This repository is a fork of [davidnemec/bitwarden-to-keepass](https://github.com/davidnemec/bitwarden-to-keepass). 
