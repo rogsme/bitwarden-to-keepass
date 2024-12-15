@@ -17,7 +17,7 @@ deploy_to_dockerhub:
     - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
     - docker buildx create --use
   script:
-    - docker buildx build --push --tag rogsme/cleanmedia:latest .
+    - docker buildx build --push --tag rogsme/bitwarden-to-keepass:latest .
 
 deploy_to_gitlab:
   stage: deploy
@@ -33,4 +33,4 @@ deploy_to_gitlab:
     - docker login registry.gitlab.com -u $GITLAB_USERNAME -p $GITLAB_PASSWORD
     - docker buildx create --use
   script:
-    - docker buildx build --push --tag registry.gitlab.com/rogs/cleanmedia:latest .
+    - docker buildx build --push --tag registry.gitlab.com/rogs/bitwarden-to-keepass:latest .
