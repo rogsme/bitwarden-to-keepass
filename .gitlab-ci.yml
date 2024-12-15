@@ -5,8 +5,6 @@ stages:
 
 deploy_to_dockerhub:
   stage: deploy
-  needs:
-    - test
   only:
     refs:
       - master
@@ -23,8 +21,6 @@ deploy_to_dockerhub:
 
 deploy_to_gitlab:
   stage: deploy
-  needs:
-    - test
   only:
     refs:
       - master
