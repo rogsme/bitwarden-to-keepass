@@ -14,7 +14,7 @@ deploy_to_dockerhub:
   services:
     - docker:dind
   before_script:
-    - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+    - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
     - docker buildx create --use
   script:
     - docker buildx build --push --tag rogsme/bitwarden-to-keepass:latest .
