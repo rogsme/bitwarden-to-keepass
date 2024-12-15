@@ -30,7 +30,7 @@ deploy_to_gitlab:
   services:
     - docker:dind
   before_script:
-    - docker login registry.gitlab.com -u $GITLAB_USERNAME -p $GITLAB_PASSWORD
+    - echo "$GITLAB_PASSWORD" | docker login registry.gitlab.com -u "$GITLAB_USERNAME" --password-stdin
     - docker buildx create --use
   script:
     - docker buildx build --push --tag registry.gitlab.com/rogs/bitwarden-to-keepass:latest .
