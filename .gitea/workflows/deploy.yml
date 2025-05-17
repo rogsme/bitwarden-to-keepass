@@ -39,5 +39,5 @@ jobs:
         run: |
           docker buildx build --push \
             --tag rogsme/bitwarden-to-keepass:latest \
-            --tag git.rogs.me \
+            --tag git.rogs.me/rogs/bitwarden-to-keepass:latest \
             .
