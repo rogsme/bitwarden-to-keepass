@@ -15,12 +15,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install Docker (if missing)
+      - name: Install Docker (fallback)
         run: |
-          sudo apt-get update
-          sudo apt-get install -y docker.io
-          sudo systemctl start docker
-          sudo usermod -aG docker $USER
+          if ! command -v docker &> /dev/null; then
+            apt-get update && apt-get install -y docker.io
+          fi
+
+      - name: Enable Docker socket access
+        run: |
+          dockerd > /tmp/dockerd.log 2>&1 &
+          sleep 5
 
       - name: Log in to DockerHub
         run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
@@ -35,5 +39,5 @@ jobs:
         run: |
           docker buildx build --push \
             --tag rogsme/bitwarden-to-keepass:latest \
-            --tag git.rogs.me/rogs/bitwarden-to-keepass:latest \
+            --tag git.rogs.me
             .
