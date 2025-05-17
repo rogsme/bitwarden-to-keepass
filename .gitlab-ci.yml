@@ -3,22 +3,6 @@ image: python:latest
 stages:
   - deploy
 
-deploy_to_dockerhub:
-  stage: deploy
-  only:
-    refs:
-      - master
-  except:
-    - tags
-  image: docker:latest
-  services:
-    - docker:dind
-  before_script:
-    - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-    - docker buildx create --use
-  script:
-    - docker buildx build --push --tag rogsme/bitwarden-to-keepass:latest .
-
 deploy_to_gitlab:
   stage: deploy
   only:
